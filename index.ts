@@ -1,6 +1,8 @@
 import { Client, Snowflake } from "discord.js";
 import config from "./config.json";
 
+const storage = new Map<string, number>()
+
 interface SlowmodeRoleData {
   roleID: Snowflake;
   time: number;
@@ -37,7 +39,7 @@ client.on("message", (message) => {
   const channelSlowmodeData = slowmodes.find((slowmode) => slowmode.channelID === message.channel.id);
   if (!channelSlowmodeData) return;
 
-  const lastMessageDate = parseInt(get(`${message.author.id}${message.channel.id}`) || 0);
+  const lastMessageDate = storage.get(`${message.author.id}${message.channel.id}`) || 0;
   let slowmode: SlowmodeRoleData = null;
   message.member.roles.cache
     .sort((a, b) => a.position - b.position)
@@ -75,6 +77,6 @@ client.on("message", (message) => {
           });
       });
   } else {
-    set(`${message.author.id}${message.channel.id}`, Date.now().toString()); // todo: when TrueXPixels/quick.db/pull/163 is merged, remove toString()
+    storage.set(`${message.author.id}${message.channel.id}`, Date.now());
   }
 });
