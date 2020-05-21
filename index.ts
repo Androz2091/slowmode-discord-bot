@@ -49,14 +49,12 @@ client.on("message", (message) => {
     const canSendMessageDate = slowmode.time + lastMessageDate;
     if(canSendMessageDate > Date.now()){
         if(message.deletable) message.delete();
-        try {
-            message.member.send(
-                config.messages.waitMP
-                .replace("{{time}}", moment.duration(canSendMessageDate-Date.now(), "milliseconds").humanize(true))
-                .replace("{{user}}", message.author.toString())
-                .replace("{{channel}}", message.channel.toString())
-            );
-        } catch (e) {
+        message.member.send(
+            config.messages.waitMP
+            .replace("{{time}}", moment.duration(canSendMessageDate-Date.now(), "milliseconds").humanize(true))
+            .replace("{{user}}", message.author.toString())
+            .replace("{{channel}}", message.channel.toString())
+        ).catch(() => {
             message.reply(
                 config.messages.wait
                 .replace("{{time}}", moment.duration(canSendMessageDate-Date.now(), "milliseconds").humanize(true))
@@ -67,7 +65,7 @@ client.on("message", (message) => {
                     timeout: 2000
                 });
             });
-        }
+        });
     } else {
         set(`${message.author.id}${message.channel.id}`, Date.now().toString()); // todo: when TrueXPixels/quick.db/pull/163 is merged, remove toString()
     }
