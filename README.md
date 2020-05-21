@@ -11,4 +11,4 @@ This bot allows you to set slowmodes in channels of your server. You can set dif
 
 ## Credits
 
-This project is sponsored by Teldup.
+🚀 This project is sponsored by **[🇫🇷 | L'île Publicitaire ✨](https://discord.gg/CXbFjjF)**.
