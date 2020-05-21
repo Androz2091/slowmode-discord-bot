@@ -35,10 +35,8 @@ client.on("ready", () => {
 
 client.on("message", (message) => {
   if (message.author.bot) return;
-
   const channelSlowmodeData = slowmodes.find((slowmode) => slowmode.channelID === message.channel.id);
   if (!channelSlowmodeData) return;
-
   const lastMessageDate = storage.get(`${message.author.id}${message.channel.id}`) || 0;
   let slowmode: SlowmodeRoleData = null;
   message.member.roles.cache
@@ -48,12 +46,9 @@ client.on("message", (message) => {
       if (slowmodeRole) slowmode = slowmodeRole;
     });
   if (!slowmode) return;
-
   const canSendMessageDate = slowmode.time + lastMessageDate;
-
   if (canSendMessageDate > Date.now()) {
     if (message.deletable) message.delete();
-
     const time = canSendMessageDate - Date.now()
     message.member
       .send(
