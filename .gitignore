@@ -1,0 +1,16 @@
+# Node
+node_modules/
+
+# Compiled files
+config.d.ts
+index.d.ts
+index.js
+
+# DB
+json.sqlite
+
+# Tests
+test.js
+
+# Config
+config.json
