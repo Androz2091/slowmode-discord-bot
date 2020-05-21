@@ -50,26 +50,18 @@ client.on("message", (message) => {
   if (canSendMessageDate > Date.now()) {
     if (message.deletable) message.delete();
     const time = canSendMessageDate - Date.now()
-    message.member
-      .send(
-        config.messages.waitMP
+    
+    message
+      .reply(
+        config.messages.wait
           .replace("{{time}}", time.toString())
           .replace("{{user}}", message.author.toString())
           .replace("{{channel}}", message.channel.toString())
       )
-      .catch(() => {
-        message
-          .reply(
-            config.messages.wait
-              .replace("{{time}}", time.toString())
-              .replace("{{user}}", message.author.toString())
-              .replace("{{channel}}", message.channel.toString())
-          )
-          .then((m) => {
-            m.delete({
-              timeout: 2000,
-            });
-          });
+      .then((m) => {
+        m.delete({
+          timeout: 2000,
+        });
       });
   } else {
     storage.set(`${message.author.id}${message.channel.id}`, Date.now());
